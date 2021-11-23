@@ -4,6 +4,10 @@
 *.d
 
 bin/*
+teste.cpp
+
+.idea/
+.vscode
 
 # Compiled Object files
 *.slo

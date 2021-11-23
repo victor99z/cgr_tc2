@@ -1,12 +1,6 @@
-// gcc snowman_sample.c -lglut -lGL -lGLU -lm -o snowman && ./snowman
-
 #include "GL/freeglut.h"
 #include "GL/gl.h"
 
-// Rotation
-static GLfloat yRot = 0.0f;
-
-// Change viewing volume and viewport.  Called when window is resized
 void ChangeSize(int w, int h)
 {
     GLfloat fAspect;
@@ -61,20 +55,31 @@ void SetupRC()
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
     // Black blue background
-    glClearColor(0.25f, 0.25f, 0.50f, 1.0f);
+    glClearColor(0.4f, 0.25f, 0.50f, 1.0f);
 }
 
-void eye(float x, float y, float z)
+void createTorre(float x, float y, float z)
 {
+    // Torres
+    glColor4f(1.0f, 0.5f, 0.0f, 0.0f);
     glPushMatrix();
-    glColor3f(0.3f, 0.3f, 0.3f);
+    //glTranslatef(-0.6f, 0.8f, -0.9f);
     glTranslatef(x, y, z);
-    glutSolidSphere(0.05f, 10, 10);
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glutSolidCylinder(0.4f, 1.2f, 20.0f, 10.0f);
+    glPopMatrix();
+
+    // cone da parte de cima da torre
+    glColor4f(1.0f, 0.4f, 0.0f, 0.0f);
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+    glutSolidCone(0.4f, 0.6f, 20.0f, 20.0f);
     glPopMatrix();
 }
 
 // Called to draw scene
-void RenderSnowman(void)
+void Render(void)
 {
 
     GLUquadricObj *pObj; // Quadric Object
@@ -87,7 +92,6 @@ void RenderSnowman(void)
 
     // Move object back and do in place rotation
     glTranslatef(0.0f, -1.0f, -5.0f);
-    glRotatef(yRot, 0.0f, 1.0f, 0.0f);
 
     // Draw something
     pObj = gluNewQuadric();
@@ -96,62 +100,63 @@ void RenderSnowman(void)
     // white
     glColor3f(1.0f, 1.0f, 1.0f);
 
-    // Head
-    glPushMatrix(); // save transform matrix state
-    glTranslatef(0.0f, 1.0f, 0.0f);
-    gluSphere(pObj, 0.24f, 26, 13);
-    glPopMatrix(); // restore transform matrix state
+    // Cria as torres usando as funcoes.
+    createTorre(-3.5f, 0.8f, -9.0f);
+    createTorre(-1.2f, 0.8f, -6.0f);
+    createTorre(3.0f, 0.8f, -6.0f);
 
-    // Body
-    glPushMatrix(); // save transform matrix state
-    glTranslatef(0.0f, 0.42f, 0.0f);
-    gluSphere(pObj, 0.4f, 26, 13);
-    glPopMatrix(); // restore transform matrix state
-
-    // Nose (orange)
-    glColor3f(1.0f, 0.4f, 0.51f);
+    // Parede Frontal
+    glColor4f(1.0f, 0.5f, 0.0f, 0.0f);
     glPushMatrix();
-    glTranslatef(0.0f, 1.0f, 0.2f);
-    gluCylinder(pObj, 0.04f, 0.0f, 0.3f, 26, 13);
+    glTranslatef(-0.8f, -0.4f, 0);
+    glBegin(GL_QUADS);
+    glVertex3f(4.0, 1.0, -6);
+    glVertex3f(0.0, 1.0, -6);
+    glVertex3f(0.0, 0.0, -6);
+    glVertex3f(4.0, 0.0, -6);
+    glEnd();
     glPopMatrix();
 
-    // Body buttons
+    /**
+     * Pontos para desenhar DEBUG
+     */
+
+    // glColor4f(0, 1.0f, 0.0f, 0.0f);
+    // glPushMatrix();
+    // glTranslatef(-0.8f, -0.4f, 0);
+    // glPointSize(10.0f);
+    // glBegin(GL_POINTS);
+    // glColor4f(0, 1.0f, 0.0f, 0.0f);
+    // glVertex3f(-2.0f, 0.3, -6); // green
+    // glColor4f(0.6, 0.3f, 0.0f, 3.0f);
+    // glVertex3f(-2.0f, 0.8f, -6); // marrom
+    // glColor4f(1.0, 0.0f, 0.0f, 0.0f);
+    // glVertex3f(-0.6f, 1.0f, -5); // red
+    // glColor4f(0.0, 0.0f, 1.0f, 0.0f);
+    // glVertex3f(-0.6f, 0.15f, -5); // blue
+    // glEnd();
+    // glPopMatrix();
+
+    //Outra parede porem lateral
+    glColor4f(1.0f, 0.5f, 0.0f, 0.0f);
     glPushMatrix();
-    glColor3f(1.0f, 0.0, 0.0);
-    glTranslatef(0.0f, 0.32f, 0.38f);
-    glutSolidSphere(0.05f, 10, 10);
+    glTranslatef(-0.8f, -0.4f, 0);
+    glBegin(GL_QUADS);
+    glVertex3f(-0.6f, 0.10f, -5); // blue
+    glVertex3f(-0.6f, 1.0f, -5);  // red
+    glVertex3f(-1.8f, 0.8f, -6);  // marrom
+    glVertex3f(-1.8f, 0.3f, -6);  // green
+    glEnd();
     glPopMatrix();
 
-    glPushMatrix();
-    glColor3f(1.0f, 0.0, 0.0);
-    glTranslatef(0.0f, 0.52f, 0.38f);
-    glutSolidSphere(0.05f, 10, 10);
-    glPopMatrix();
+    // Casinha do meio
 
+    // 255, 146, 56
+    glColor4f(1.0f, 146 / 255.0, 56 / 255.0f, 0.0f);
     glPushMatrix();
-    glColor3f(1.0f, 0.0, 0.0);
-    glTranslatef(0.0f, 0.72f, 0.25f);
-    glutSolidSphere(0.05f, 10, 10);
-    glPopMatrix();
-
-    // Eyes (black)
-    eye(-0.1f, 1.05f, 0.2f);
-    eye(0.1f, 1.05f, 0.2f);
-
-    // Hat base
-    glColor3f(1.0f, 00.0f, 0.00f);
-    glPushMatrix();
-    glTranslatef(0.0f, 1.2f, 0.0f);
-    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-    glutSolidCylinder(0.3f, 0.04f, 20.0f, 20.0f);
-    glPopMatrix();
-
-    // Other Cylinder, top hat part
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glPushMatrix();
-    glTranslatef(0.0f, 1.5f, 0.0f);
-    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-    glutSolidCylinder(0.2f, 0.3f, 20.0f, 20.0f);
+    glTranslatef(-0.8f, -0.4f, -6.0f);
+    glRotatef(15.0, 0.0, 1.0, 0.0);
+    glutSolidCube(0.6);
     glPopMatrix();
 
     // Restore the matrix state
@@ -163,32 +168,15 @@ void RenderSnowman(void)
     gluDeleteQuadric(pObj);
 }
 
-// Respond to arrow keys (rotate snowman)
-void SpecialKeys(unsigned char key, int x, int y)
-{
-
-    if (key == GLUT_KEY_LEFT)
-        yRot -= 10.0f;
-
-    if (key == GLUT_KEY_RIGHT)
-        yRot += 10.0f;
-
-    yRot = (GLfloat)((const int)yRot % 360);
-
-    // Refresh the Window
-    glutPostRedisplay();
-}
-
 int main(int argc, char *argv[])
 {
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(800, 600);
-    glutCreateWindow("Modeling with Quadrics");
+    glutInitWindowSize(1280, 720);
+    glutCreateWindow("Castelo");
     glutReshapeFunc(ChangeSize);
-    glutKeyboardFunc(SpecialKeys);
-    glutDisplayFunc(RenderSnowman);
+    glutDisplayFunc(Render);
     SetupRC();
     glutMainLoop();
 

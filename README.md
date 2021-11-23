@@ -21,6 +21,10 @@
 <br>
 
 ```bash 
+$ sudo apt-get install g++ mesa-common-dev build-essential
+```
+
+```bash 
 $ sudo apt-get install freeglut3 freeglut3-dev libglew-dev 
 ```
 
@@ -28,4 +32,14 @@ $ sudo apt-get install freeglut3 freeglut3-dev libglew-dev
 
 ```bash 
 $ make snow
+```
+
+
+```bash 
+$ make construction
+```
+
+
+```bash 
+$ make robot
 ```

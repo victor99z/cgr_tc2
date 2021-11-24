@@ -2,7 +2,11 @@
 #include <GL/glut.h>
 #include <stdlib.h>
 
-int shoulder = 0, elbow = 0;
+int shoulder_right = 0;
+int elbow_right = 0;
+int shoulder_left = 0;
+int elbow_left = 0;
+int body_core = 0;
 
 void init(void)
 {
@@ -16,7 +20,7 @@ void display(void)
     glColor3f(1.0, 1.0, 1.0);
     glPushMatrix();
     glTranslatef(-1.0, 0.0, 0.0);
-    glRotatef((GLfloat)shoulder, 0.0, 0.0, 1.0);
+    glRotatef((GLfloat)shoulder_right, 0.0, 0.0, 1.0);
     glTranslatef(1.0, 0.0, 0.0);
     glBegin(GL_QUADS);
     glVertex2f(1.0, 0.1);
@@ -27,7 +31,7 @@ void display(void)
 
     glPushMatrix();
     glTranslatef(1.0, 0.0, 0.0);
-    glRotatef((GLfloat)elbow, 0.0, 0.0, 1.0);
+    glRotatef((GLfloat)elbow_right, 0.0, 0.0, 1.0);
     glTranslatef(1.0, 0.0, 0.0);
     glBegin(GL_QUADS);
     glVertex2f(1.0, 0.1);
@@ -36,6 +40,58 @@ void display(void)
     glVertex2f(-1.0, 0.1);
     glEnd();
     glPopMatrix();
+
+    glColor3f(1.0, 1.0, 1.0);
+    glPushMatrix();
+    glTranslatef(-5.0, 0.0, 0.0);
+    glRotatef((GLfloat)shoulder_right, 0.0, 0.0, 1.0);
+    glTranslatef(1.0, 0.0, 0.0);
+    glBegin(GL_QUADS);
+    glVertex2f(1.0, 0.1);
+    glVertex2f(1.0, -0.1);
+    glVertex2f(-1.0, -0.1);
+    glVertex2f(-1.0, 0.1);
+    glEnd();
+
+    // COre?
+    glColor3f(1.0, 1.0, 1.0);
+    glPushMatrix();
+    glTranslatef(-5.0, 0.0, 0.0);
+    glRotatef((GLfloat)body_core, 0.0, 0.0, 1.0);
+    glTranslatef(1.0, 0.0, 0.0);
+    glBegin(GL_QUADS);
+    glVertex2f(1.0, 0.1);
+    glVertex2f(1.0, -0.8);
+    glVertex2f(-1.0, -0.8);
+    glVertex2f(-1.0, 0.1);
+    glEnd();
+
+    // lado esquerdo
+    glColor3f(1.0, 1.0, 1.0);
+    glPushMatrix();
+    glTranslatef(-5.0, 0.0, 0.0);
+    glRotatef((GLfloat)shoulder_left, 0.0, 0.0, 1.0);
+    glTranslatef(1.0, 0.0, 0.0);
+    glBegin(GL_QUADS);
+    glVertex2f(-1.0, 0.1);
+    glVertex2f(-1.0, -0.1);
+    glVertex2f(1.0, -0.1);
+    glVertex2f(1.0, 0.1);
+    glEnd();
+
+    // lado esquerdo
+    glPushMatrix();
+    glTranslatef(-5.0, 0.0, 0.0);
+    glRotatef((GLfloat)elbow_left, 0.0, 0.0, 1.0);
+    glTranslatef(1.0, 0.0, 0.0);
+    glBegin(GL_QUADS);
+    glVertex2f(1.0, 0.1);
+    glVertex2f(1.0, -0.1);
+    glVertex2f(-1.0, -0.1);
+    glVertex2f(-1.0, 0.1);
+    glEnd();
+    glPopMatrix();
+
     glPopMatrix();
     glutSwapBuffers();
 }
@@ -57,12 +113,12 @@ void keyboard(unsigned char key, int x, int y)
     {
     case 's':
     case 'S':
-        shoulder = (shoulder - 5) % 360;
+        shoulder_right = (shoulder_right - 5) % 360;
         glutPostRedisplay();
         break;
     case 'e':
     case 'E':
-        elbow = (elbow - 5) % 360;
+        elbow_right = (elbow_right - 5) % 360;
         glutPostRedisplay();
         break;
     case 'q':

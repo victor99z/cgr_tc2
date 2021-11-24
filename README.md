@@ -41,3 +41,10 @@ $ make construction
 ```bash 
 $ make robot
 ```
+
+
+## Imagens:
+
+![alt text](/photos/snowman.png)
+![alt text](/photos/castle.png)
+![alt text](/photos/robot.png)

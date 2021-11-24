@@ -1,8 +1,6 @@
 name = ${}
 
-run:
-	g++ teste.cpp -lglut -lGL -lGLU -lm -o bin/teste
-	./bin/teste
+run: robot snow construction
 
 robot:
 	g++ robot.cpp -lglut -lGL -lGLU -lm -o bin/robot

@@ -1,6 +1,8 @@
 #include "GL/freeglut.h"
 #include "GL/gl.h"
 
+static GLfloat yRot = 0.0f;
+
 void ChangeSize(int w, int h)
 {
     GLfloat fAspect;
@@ -92,6 +94,7 @@ void Render(void)
 
     // Move object back and do in place rotation
     glTranslatef(0.0f, -1.0f, -5.0f);
+    glRotatef(yRot, 0.0f, 1.0f, 0.0f);
 
     // Draw something
     pObj = gluNewQuadric();
@@ -117,26 +120,6 @@ void Render(void)
     glEnd();
     glPopMatrix();
 
-    /**
-     * Pontos para desenhar DEBUG
-     */
-
-    // glColor4f(0, 1.0f, 0.0f, 0.0f);
-    // glPushMatrix();
-    // glTranslatef(-0.8f, -0.4f, 0);
-    // glPointSize(10.0f);
-    // glBegin(GL_POINTS);
-    // glColor4f(0, 1.0f, 0.0f, 0.0f);
-    // glVertex3f(-2.0f, 0.3, -6); // green
-    // glColor4f(0.6, 0.3f, 0.0f, 3.0f);
-    // glVertex3f(-2.0f, 0.8f, -6); // marrom
-    // glColor4f(1.0, 0.0f, 0.0f, 0.0f);
-    // glVertex3f(-0.6f, 1.0f, -5); // red
-    // glColor4f(0.0, 0.0f, 1.0f, 0.0f);
-    // glVertex3f(-0.6f, 0.15f, -5); // blue
-    // glEnd();
-    // glPopMatrix();
-
     //Outra parede porem lateral
     glColor4f(1.0f, 0.5f, 0.0f, 0.0f);
     glPushMatrix();
@@ -151,13 +134,75 @@ void Render(void)
 
     // Casinha do meio
 
-    // 255, 146, 56
     glColor4f(1.0f, 146 / 255.0, 56 / 255.0f, 0.0f);
     glPushMatrix();
-    glTranslatef(-0.8f, -0.4f, -6.0f);
+    glTranslatef(1.0f, 0.2f, -6.0f);
     glRotatef(15.0, 0.0, 1.0, 0.0);
-    glutSolidCube(0.6);
+    glutSolidCube(1.2);
     glPopMatrix();
+
+    // Telhado da casa
+    glColor4f(0.65f, 146 / 255.0, 56 / 255.0f, 0.0f);
+
+    glPushMatrix();
+    glBegin(GL_TRIANGLES);
+    glVertex3f(0.65f, 1.3f, -2); // blue
+    glVertex3f(0.1f, 0.85f, -2); // red
+    glVertex3f(1.2f, 0.85f, -2); // marrom
+    glEnd();
+    glPopMatrix();
+
+    // "Sombra do telhado"
+    glColor4f(0.8f, 146 / 255.0, 56 / 255.0f, 0.0f);
+    glPushMatrix();
+    glTranslatef(0.1f, 0.0, 1);
+    glBegin(GL_TRIANGLES);
+    glVertex3f(0.45f, 1.25f, -2); // blue
+    glVertex3f(0.25f, 0.87f, -2); // red
+    glVertex3f(1.0f, 0.87f, -2);  // marrom
+    glEnd();
+    glPopMatrix();
+
+    // Predio atrás
+    glColor4f(0.81f, 143 / 255.0, 95 / 255.0f, 0.0f);
+    glPushMatrix();
+    glTranslatef(-0.5, 0.4, -1);
+    glBegin(GL_QUADS);
+    glVertex3f(1.2f, 1.4f, -6);  // marrom
+    glVertex3f(0.40f, 1.4f, -6); // blue
+    glVertex3f(0.40f, 0.1f, -6); // red
+    glVertex3f(1.2f, 0.1f, -6);  // marrom
+    glEnd();
+    glPopMatrix();
+
+    // Telhado do prédio
+    glColor4f(0.6f, 92 / 255.0, 56 / 255.0f, 0.0f);
+    glPushMatrix();
+    glBegin(GL_TRIANGLES);
+    glVertex3f(1.2f - 0.5f, 1.4f + 0.4f, -7);                       // marrom
+    glVertex3f((0.4f + 1.2f) / 2 - 0.5f, (1.4f + 0.3f) + 0.6f, -7); // blue
+    glVertex3f(0.4f - 0.5f, 1.4f + 0.4f, -7);                       // red
+    glEnd();
+    glPopMatrix();
+
+    /**
+     * Pontos para desenhar DEBUG
+     */
+
+    // glColor4f(0, 1.0f, 0.0f, 0.0f);
+    // glPushMatrix();
+    // glPointSize(10.0f);
+    // glBegin(GL_POINTS);
+    // glColor4f(0, 1.0f, 0.0f, 0.0f);
+    // glVertex3f(1.2f - 0.5f, 1.4f + 0.4f, -7); // green
+    // // glColor4f(0.6, 0.3f, 0.0f, 3.0f);
+    // // glVertex3f(-2.0f, 0.8f, -6); // marrom
+    // glColor4f(1.0, 0.0f, 0.0f, 0.0f);
+    // glVertex3f((0.4f + 1.2f) / 2 - 0.5f, (1.4f + 0.3f) + 0.6f, -7); // red
+    // glColor4f(0.0, 0.0f, 1.0f, 0.0f);
+    // glVertex3f(0.4f - 0.5f, 1.4f + 0.4f, -7); // blue
+    // glEnd();
+    // glPopMatrix();
 
     // Restore the matrix state
     glPopMatrix();
@@ -166,6 +211,21 @@ void Render(void)
     glutSwapBuffers();
 
     gluDeleteQuadric(pObj);
+}
+
+void SpecialKeys(unsigned char key, int x, int y)
+{
+
+    if (key == GLUT_KEY_LEFT)
+        yRot -= 10.0f;
+
+    if (key == GLUT_KEY_RIGHT)
+        yRot += 10.0f;
+
+    yRot = (GLfloat)((const int)yRot % 360);
+
+    // Refresh the Window
+    glutPostRedisplay();
 }
 
 int main(int argc, char *argv[])
@@ -177,6 +237,7 @@ int main(int argc, char *argv[])
     glutCreateWindow("Castelo");
     glutReshapeFunc(ChangeSize);
     glutDisplayFunc(Render);
+    glutKeyboardFunc(SpecialKeys);
     SetupRC();
     glutMainLoop();
 
